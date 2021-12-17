@@ -1,0 +1,13 @@
+- op: replace
+  path: /metadata/name
+  value: test-db
+- op: replace
+  path: /spec/image
+  value: registry.developers.crunchydata.com/crunchydata/crunchy-postgres-gis:centos8-13.4-3.1-1
+- op: add
+  path: /spec/patroni 
+  value:
+    dynamicConfiguration:
+      postgresql:
+        parameters:
+          shared_preload_libraries: timescaledb
