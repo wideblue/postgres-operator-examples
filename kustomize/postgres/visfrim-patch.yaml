@@ -1,0 +1,44 @@
+- op: replace
+  path: /metadata/name
+  value: visfrim-db
+- op: replace
+  path: /spec/image
+  value: registry.developers.crunchydata.com/crunchydata/crunchy-postgres-gis:centos8-13.5-3.1-0
+- op: replace
+  path: /spec/instances/0/dataVolumeClaimSpec/resources/requests/storage
+  value: 4Gi 
+- op: replace
+  path: /spec/backups/pgbackrest/repos/0/volume/volumeClaimSpec/resources/requests/storage
+  value: 2.5Gi 
+- op: add
+  path: /spec/users
+  value: [{"name": "visfrim", "databases": ["visfrim-db"], "options": "SUPERUSER"}]
+- op: add
+  path: /spec/patroni 
+  value:
+    dynamicConfiguration:
+      postgresql:
+        parameters:
+          max_wal_size: 100 MB
+- op: replace
+  path: /spec/backups/pgbackrest/image
+  value:  registry.developers.crunchydata.com/crunchydata/crunchy-pgbackrest:centos8-2.36-0
+- op: add
+  path: /spec/backups/pgbackrest/global
+  value:
+    repo1-retention-full: "5"
+    repo1-retention-full-type: time
+    log-level-console: debug
+
+- op: add
+  path: /spec/backups/pgbackrest/manual
+  value:
+      repoName: repo1
+      options:
+       - --type=full  
+- op: add
+  path: /spec/backups/pgbackrest/repos/0/schedules
+  value:
+    full: "0 1 * * *"
+    incremental: "0 */1 * * *"
+ 
