@@ -1,0 +1,12 @@
+namespace: meteo-database
+
+resources:
+- postgres.yaml
+
+patchesJson6902:
+- target:
+    group: postgres-operator.crunchydata.com
+    version: v1beta1
+    kind: PostgresCluster
+    name: hippo
+  path: meteo-patch.yaml
