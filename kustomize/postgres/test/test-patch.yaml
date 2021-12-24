@@ -11,3 +11,20 @@
       postgresql:
         parameters:
           shared_preload_libraries: timescaledb
+- op: add
+  path: /spec/backups/pgbackrest/global
+  value:
+    repo1-retention-full: "7"
+    repo1-retention-full-type: time
+- op: add
+  path: /spec/backups/pgbackrest/manual
+  value:
+      repoName: repo1
+      options:
+       - --type=full  
+- op: add
+  path: /spec/backups/pgbackrest/repos/0/schedules
+  value:
+    full: "0 1 * * *"
+    incremental: "*/5 * * * *"
+
